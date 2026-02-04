@@ -18,12 +18,14 @@ public class Media {
     private String transcript;
     private String language;
     private long createdAt;
+    private String type;
     
-    public Media(String videoPath, String audioPath, String transcript, String language) {
+    public Media(String videoPath, String audioPath, String transcript, String language, String type) {
         this.videoPath = videoPath;
         this.audioPath = audioPath;
         this.transcript = transcript;
         this.language = language;
+        this.type = type;
         this.createdAt = System.currentTimeMillis();
     }
 }
