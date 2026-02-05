@@ -1,45 +1,87 @@
 package com.example.backend_ai_interview.services;
 
-import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.UUID;
-import com.example.backend_ai_interview.utils.Ffmpeg;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.example.backend_ai_interview.models.Media;
+import com.example.backend_ai_interview.utils.Ffmpeg;
 
 @Service
 public class MediaService {
 
-  private static final String VIDEO_DIR = "storage/videos/";
-  private static final String AUDIO_DIR = "storage/audio/";
+    @Autowired
+    private SttClient sttClient;
 
-  @Autowired
-  private WhisperService whisperService;
+    public Media handleUpload(MultipartFile file) throws Exception {
 
-  public Media handleUpload(MultipartFile file) throws Exception {
-    Files.createDirectories(Paths.get(VIDEO_DIR));
-    Files.createDirectories(Paths.get(AUDIO_DIR));
+        String contentType = file.getContentType();
+        if (contentType == null) {
+            throw new IllegalArgumentException("Content-Type tidak valid");
+        }
 
-    String uuid = UUID.randomUUID().toString();
-    String videoPath = VIDEO_DIR + uuid + ".webm";
-    String audioPath = AUDIO_DIR + uuid + ".wav";
+        // ===== temp files =====
+        File tempInput;
+        File tempAudio;
 
-    file.transferTo(new File(videoPath));
+        /* ================= VIDEO ================= */
+        if (contentType.startsWith("video/")) {
 
-    Ffmpeg.extractAudio(videoPath, audioPath);
+            tempInput = Files.createTempFile("video-", getExtension(file.getOriginalFilename()))
+                    .toFile();
+            tempAudio = Files.createTempFile("audio-", ".wav").toFile();
 
-    String transcript = whisperService.transcribe(new File(audioPath));
+            file.transferTo(tempInput);
 
-    Media media = new Media();
-    media.setVideoPath(videoPath);
-    media.setAudioPath(audioPath);
-    media.setTranscript(transcript);
-    media.setLanguage("id"); 
+            Ffmpeg.extractAudio(
+                tempInput.getAbsolutePath(),
+                tempAudio.getAbsolutePath()
+            );
 
-    return media; // simpan ke DB jika pakai JPA
-  }
+        }
+
+        /* ================= AUDIO ================= */
+        else if (contentType.startsWith("audio/")) {
+
+            tempAudio = Files.createTempFile("audio-", ".wav").toFile();
+            file.transferTo(tempAudio);
+            tempInput = null;
+
+        }
+
+        else {
+            throw new IllegalArgumentException(
+                "Format tidak didukung: " + contentType
+            );
+        }
+
+        // ===== STT =====
+        String transcript = sttClient.transcribe(tempAudio);
+
+        // ===== cleanup =====
+        if (tempInput != null && tempInput.exists()) {
+            tempInput.delete();
+        }
+        if (tempAudio.exists()) {
+            tempAudio.delete();
+        }
+
+        Media media = new Media();
+        media.setVideoPath(null);   // tidak disimpan
+        media.setAudioPath(null);   // tidak disimpan
+        media.setTranscript(transcript);
+        media.setLanguage("id");
+
+        return media;
+    }
+
+    private String getExtension(String filename) {
+        if (filename == null || !filename.contains(".")) {
+            return ".webm";
+        }
+        return filename.substring(filename.lastIndexOf("."));
+    }
 }
-
