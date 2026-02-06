@@ -2,13 +2,12 @@ package com.example.backend_ai_interview.controllers;
 
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -17,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.backend_ai_interview.models.Media;
 import com.example.backend_ai_interview.services.MediaService;
+import com.example.backend_ai_interview.services.QuestionStoreService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -29,10 +29,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Media", description = "API untuk upload dan transkripsi media")
 public class MediaController {
 
-    private static final Logger logger = LoggerFactory.getLogger(MediaController.class);
-
     @Autowired
     private MediaService mediaService;
+    @Autowired
+    private QuestionStoreService questionStoreService;
 
     @PostMapping(
         value = "/upload",
@@ -46,18 +46,25 @@ public class MediaController {
     @ApiResponse(responseCode = "500", description = "Error pada server")
     public ResponseEntity<?> uploadMedia(
         @Parameter(description = "File video atau audio", required = true)
-        @RequestPart("file") MultipartFile file
-    ) {
-        try {
-            Media media = mediaService.handleUpload(file);
-            return ResponseEntity.ok(Map.of(
-                "message", "Upload & transkripsi berhasil",
-                "transcript", media.getTranscript()
-            ));
-        } catch (Exception e) {
-            logger.error("Error during media upload and transcription", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", e.getMessage()));
-        }
+        @RequestPart("file") MultipartFile file,
+        @RequestPart("level") String level,
+        @RequestPart("questionId") String questionId
+    ) throws Exception {
+        Media media = mediaService.handleUpload(file, level, questionId);
+        return ResponseEntity.ok(Map.of(
+            "message", "Upload & transkripsi berhasil",
+            "transcript", media.getTranscript(),
+            "level", level,
+            "questionId", questionId,
+            "score", media.getScore()
+        ));
     }
+
+    @GetMapping("/{level}")
+    public ResponseEntity<?> getQuestionsByLevel(@PathVariable String level) {
+        Map<String, Object> data = questionStoreService.loadQuestionsByLevel(level);
+        return ResponseEntity.ok(data);
+    }
+
+
 }

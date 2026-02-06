@@ -3,6 +3,7 @@ package com.example.backend_ai_interview.services;
 import java.io.File;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -12,11 +13,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 
 @Service
 public class SttClient {
 
-    private static final String STT_URL ="http://127.0.0.1:8000/media/transcribe";
+    @Value("${stt.url}")
+    private String sttUrl;
 
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -31,8 +34,7 @@ public class SttClient {
         HttpEntity<MultiValueMap<String, Object>> request =
                 new HttpEntity<>(body, headers);
 
-        ResponseEntity<Map> response =
-                restTemplate.postForEntity(STT_URL, request, Map.class);
+        ResponseEntity<Map<String, Object>> response = restTemplate.exchange(sttUrl, org.springframework.http.HttpMethod.POST, request, new ParameterizedTypeReference<Map<String, Object>>() {});
 
         if (!response.getStatusCode().is2xxSuccessful()) {
             throw new RuntimeException("STT service error");
