@@ -1,0 +1,44 @@
+{
+  "_id": "backend_senior",
+  "level": "SENIOR",
+  "role": "Backend Engineer",
+  "technology": "Java Spring Boot",
+  "list_pertanyaan": [
+    {
+      "question_id": "SENIOR_Q1",
+      "pertanyaan": "Bagaimana Anda mendesain aplikasi Spring Boot untuk menangani traffic tinggi?",
+      "rubrik_penilaian": {
+        "1": "Jawaban sangat umum",
+        "2": "Menyebut scaling tanpa detail",
+        "3": "Menyebut cache dan load balancing",
+        "4": "Menjelaskan stateless service dan database optimization",
+        "5": "Menjelaskan scalability end-to-end (LB, cache, async, connection pool)"
+      },
+      "jawaban_karyawan": ""
+    },
+    {
+      "question_id": "SENIOR_Q2",
+      "pertanyaan": "Bagaimana cara mengamankan REST API di Spring Boot?",
+      "rubrik_penilaian": {
+        "1": "Hanya login biasa",
+        "2": "Menyebut JWT",
+        "3": "Menggunakan Spring Security",
+        "4": "Role-based access control",
+        "5": "OAuth2, token refresh, rate limiting, dan security best practice"
+      },
+      "jawaban_karyawan": ""
+    },
+    {
+      "question_id": "SENIOR_Q3",
+      "pertanyaan": "Ceritakan pengalaman Anda dalam melakukan refactor atau improvement sistem backend yang sudah berjalan.",
+      "rubrik_penilaian": {
+        "1": "Tidak pernah melakukan refactor",
+        "2": "Refactor kecil tanpa dampak jelas",
+        "3": "Refactor untuk readability dan maintainability",
+        "4": "Menjelaskan problem dan solusi teknis",
+        "5": "Menjelaskan dampak teknis dan dampak bisnis"
+      },
+      "jawaban_karyawan": ""
+    }
+  ]
+}

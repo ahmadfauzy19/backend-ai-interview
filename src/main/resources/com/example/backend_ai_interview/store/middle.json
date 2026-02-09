@@ -1,0 +1,44 @@
+{
+  "_id": "backend_middle",
+  "level": "MIDDLE",
+  "role": "Backend Engineer",
+  "technology": "Java Spring Boot",
+  "list_pertanyaan": [
+    {
+      "question_id": "MIDDLE_Q1",
+      "pertanyaan": "Bagaimana cara mendesain REST API yang baik di Spring Boot?",
+      "rubrik_penilaian": {
+        "1": "Tidak memahami REST API design",
+        "2": "Menjawab tanpa struktur",
+        "3": "Menjelaskan resource-based URL",
+        "4": "Menjelaskan pagination dan status code",
+        "5": "Menjelaskan versioning, error handling, dan konsistensi API"
+      },
+      "jawaban_karyawan": ""
+    },
+    {
+      "question_id": "MIDDLE_Q2",
+      "pertanyaan": "Apa fungsi @Transactional dan kapan sebaiknya digunakan?",
+      "rubrik_penilaian": {
+        "1": "Tidak memahami transaction",
+        "2": "Mengetahui rollback saja",
+        "3": "Menjelaskan fungsi transactional",
+        "4": "Menjelaskan penggunaan di service layer",
+        "5": "Menjelaskan propagation dan rollback behavior"
+      },
+      "jawaban_karyawan": ""
+    },
+    {
+      "question_id": "MIDDLE_Q3",
+      "pertanyaan": "Bagaimana cara menangani error dan exception di Spring Boot REST API?",
+      "rubrik_penilaian": {
+        "1": "Menangani error di controller secara manual",
+        "2": "Menggunakan try-catch",
+        "3": "Menggunakan @ExceptionHandler",
+        "4": "Menggunakan @ControllerAdvice",
+        "5": "Custom error response dan standar HTTP status code"
+      },
+      "jawaban_karyawan": ""
+    }
+  ]
+}

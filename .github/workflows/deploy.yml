@@ -1,0 +1,46 @@
+name: Deploy Backend
+
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.VM_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy Backend to VM
+        env:
+          VM_HOST: ${{ secrets.VM_HOST }}
+          VM_USER: ${{ secrets.VM_USER }}
+        run: |
+          # Sync backend files to VM
+          rsync -avz --delete \
+            --exclude '.git' \
+            --exclude 'target' \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            ./ ${VM_USER}@${VM_HOST}:/opt/ai-interview/backend-ai-interview/
+
+          # Rebuild and restart only backend container
+          ssh -o StrictHostKeyChecking=no ${VM_USER}@${VM_HOST} << 'ENDSSH'
+            cd /opt/ai-interview
+            docker compose build backend
+            docker compose up -d backend
+            docker compose ps
+          ENDSSH
+
+      - name: Health Check
+        run: |
+          sleep 30
+          curl -f https://ai-interview.jiwamu.de/api/questions/junior || echo "Health check warning"
