@@ -15,13 +15,13 @@ public class GeminiClient {
 
     @Autowired
     public GeminiClient(GeminiPropertiesConfig props) {
-        // API Key diambil otomatis dari ENV: GEMINI_API_KEY
-        // SET KE ENV
         System.setProperty("GEMINI_API_KEY", props.getApiKey());
 
         this.model = props.getModel();
 
-        this.client = new Client();
+        this.client = Client.builder()
+                .apiKey(props.getApiKey()) 
+                .build();
     }
 
 

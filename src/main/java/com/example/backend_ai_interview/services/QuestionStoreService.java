@@ -5,15 +5,16 @@ import java.io.InputStream;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.backend_ai_interview.dto.InterviewContext;
+import com.example.backend_ai_interview.dto.QuestionContext;
 
 @Service
 public class QuestionStoreService {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
 
-    public Map<String, Object> loadQuestionsByLevel(String level) {
+    public InterviewContext loadContextByLevel(String level) {
         try {
             String fileName = switch (level.toUpperCase()) {
                 case "JUNIOR" -> "junior.json";
@@ -22,13 +23,21 @@ public class QuestionStoreService {
                 default -> throw new IllegalArgumentException("Level tidak valid");
             };
 
-            String path = "/com/example/backend_ai_interview/store/" + fileName;
+            InputStream is = getClass()
+                .getResourceAsStream("/com/example/backend_ai_interview/store/" + fileName);
 
-            InputStream is = getClass().getResourceAsStream(path);
-            return objectMapper.readValue(is, Map.class);
+            return mapper.readValue(is, InterviewContext.class);
 
-        } catch (IOException | IllegalArgumentException e) {
-            throw new RuntimeException("Gagal membaca file soal", e);
+        } catch (Exception e) {
+            throw new RuntimeException("Gagal load interview context", e);
         }
     }
+
+    public QuestionContext getQuestionById(InterviewContext context, String questionId) {
+        return context.listPertanyaan().stream()
+            .filter(q -> q.questionId().equals(questionId))
+            .findFirst()
+            .orElseThrow(() -> new RuntimeException("Question ID tidak ditemukan"));
+    }
 }
+
