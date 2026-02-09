@@ -1,32 +1,32 @@
 package com.example.backend_ai_interview.models;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.AllArgsConstructor;
+import com.example.backend_ai_interview.dto.AnswerResult;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Document(collection = "media")
 public class Media {
+
     @Id
     private String id;
-    private String videoPath;
-    private String audioPath;
-    private String transcript;
-    private String language;
-    private long createdAt;
-    private Integer score;
-    
-    public Media(String videoPath, String audioPath, String transcript, String language, Integer score) {
-        this.videoPath = videoPath;
-        this.audioPath = audioPath;
-        this.transcript = transcript;
-        this.language = language;
-        this.score = score;
-        this.createdAt = System.currentTimeMillis();
-    }
+
+    private String level;
+    private String role;
+    private String technology;
+
+    // hasil lengkap interview
+    private List<AnswerResult> answers;
+
+    // nilai akhir keseluruhan
+    private Integer finalScore;
+
+    private long createdAt = System.currentTimeMillis();
 }

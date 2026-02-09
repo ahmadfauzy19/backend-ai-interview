@@ -1,0 +1,89 @@
+{
+  "_id": "backend_middle",
+  "level": "MIDDLE",
+  "role": "Backend Engineer",
+  "technology": "Java Spring Boot",
+  "list_pertanyaan": [
+    {
+      "question_id": "MIDDLE_Q1",
+      "pertanyaan": "Bagaimana cara mendesain REST API yang baik di Spring Boot?",
+      "rubrik_penilaian": {
+        "1": {
+          "deskripsi": "Tidak memahami REST API design",
+          "keyword": ["tidak tahu", "bingung", "asal buat endpoint"]
+        },
+        "2": {
+          "deskripsi": "Menjawab tanpa struktur",
+          "keyword": ["best practice", "rapi", "mudah digunakan"]
+        },
+        "3": {
+          "deskripsi": "Menjelaskan resource-based URL",
+          "keyword": ["resource based", "noun based", "/api/users", "RESTful URL"]
+        },
+        "4": {
+          "deskripsi": "Menjelaskan pagination dan status code",
+          "keyword": ["pagination", "page size", "HTTP status code", "200", "404", "400"]
+        },
+        "5": {
+          "deskripsi": "Menjelaskan versioning, error handling, dan konsistensi API",
+          "keyword": ["API versioning", "v1", "error response", "consistency", "backward compatibility"]
+        }
+      },
+      "jawaban_karyawan": ""
+    },
+    {
+      "question_id": "MIDDLE_Q2",
+      "pertanyaan": "Apa fungsi @Transactional dan kapan sebaiknya digunakan?",
+      "rubrik_penilaian": {
+        "1": {
+          "deskripsi": "Tidak memahami transaction",
+          "keyword": ["tidak tahu", "bingung transaction", "@Transactional apa"]
+        },
+        "2": {
+          "deskripsi": "Mengetahui rollback saja",
+          "keyword": ["rollback", "gagal langsung batal"]
+        },
+        "3": {
+          "deskripsi": "Menjelaskan fungsi transactional",
+          "keyword": ["commit", "rollback", "atomic", "konsistensi data"]
+        },
+        "4": {
+          "deskripsi": "Menjelaskan penggunaan di service layer",
+          "keyword": ["service layer", "@Service", "business logic", "transaction boundary"]
+        },
+        "5": {
+          "deskripsi": "Menjelaskan propagation dan rollback behavior",
+          "keyword": ["propagation", "REQUIRED", "REQUIRES_NEW", "rollbackFor", "checked exception"]
+        }
+      },
+      "jawaban_karyawan": ""
+    },
+    {
+      "question_id": "MIDDLE_Q3",
+      "pertanyaan": "Bagaimana cara menangani error dan exception di Spring Boot REST API?",
+      "rubrik_penilaian": {
+        "1": {
+          "deskripsi": "Menangani error di controller secara manual",
+          "keyword": ["error di controller", "return message manual"]
+        },
+        "2": {
+          "deskripsi": "Menggunakan try-catch",
+          "keyword": ["try catch", "exception handling dasar"]
+        },
+        "3": {
+          "deskripsi": "Menggunakan @ExceptionHandler",
+          "keyword": ["@ExceptionHandler", "custom exception method"]
+        },
+        "4": {
+          "deskripsi": "Menggunakan @ControllerAdvice",
+          "keyword": ["@ControllerAdvice", "global exception handling"]
+        },
+        "5": {
+          "deskripsi": "Custom error response dan standar HTTP status code",
+          "keyword": ["error response standard", "error code", "HTTP status", "problem detail"]
+        }
+      },
+      "jawaban_karyawan": ""
+    }
+  ]
+}
