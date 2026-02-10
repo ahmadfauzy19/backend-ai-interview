@@ -15,23 +15,13 @@ public class GeminiClient {
 
     @Autowired
     public GeminiClient(GeminiPropertiesConfig props) {
-        // Google GenAI library requires GOOGLE_API_KEY environment variable
-        String apiKey = props.getApiKey();
-        if (apiKey != null && !apiKey.isBlank()) {
-            // Set as GOOGLE_API_KEY for the Google GenAI library
-            System.setProperty("GOOGLE_API_KEY", apiKey);
-        } else {
-            // Tidak ada API key, lanjutkan tanpa meng-set system property
-            System.err.println("Warning: GEMINI_API_KEY not set; GeminiClient will be limited.");
-        }
+        System.setProperty("GEMINI_API_KEY", props.getApiKey());
 
         this.model = props.getModel();
 
-        if (apiKey != null && !apiKey.isBlank()) {
-            this.client = new Client();
-        } else {
-            this.client = null; // Gemini disabled
-        }
+        this.client = Client.builder()
+                .apiKey(props.getApiKey()) 
+                .build();
     }
 
 

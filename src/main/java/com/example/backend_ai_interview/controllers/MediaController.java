@@ -23,6 +23,9 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import com.example.backend_ai_interview.dto.InterviewContext;
+import com.example.backend_ai_interview.dto.Segments;
+
 @RestController
 @RequestMapping("/api/media")
 @CrossOrigin
@@ -48,21 +51,21 @@ public class MediaController {
         @Parameter(description = "File video atau audio", required = true)
         @RequestPart("file") MultipartFile file,
         @RequestPart("level") String level,
-        @RequestPart("questionId") String questionId
+        @RequestPart("segments") Segments segments
     ) throws Exception {
-        Media media = mediaService.handleUpload(file, level, questionId);
+        Media media = mediaService.handleUpload(file, level, segments);
         return ResponseEntity.ok(Map.of(
             "message", "Upload & transkripsi berhasil",
-            "transcript", media.getTranscript(),
             "level", level,
-            "questionId", questionId,
-            "score", media.getScore()
+            "segments", segments,
+            "listAnswers", media.getAnswers(),
+            "score", media.getFinalScore()
         ));
     }
 
     @GetMapping("/{level}")
     public ResponseEntity<?> getQuestionsByLevel(@PathVariable String level) {
-        Map<String, Object> data = questionStoreService.loadQuestionsByLevel(level);
+       InterviewContext data = questionStoreService.loadContextByLevel(level);
         return ResponseEntity.ok(data);
     }
 
