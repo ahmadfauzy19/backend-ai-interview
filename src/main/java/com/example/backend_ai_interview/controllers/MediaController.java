@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.backend_ai_interview.models.Media;
-import com.example.backend_ai_interview.services.MediaService;
+import com.example.backend_ai_interview.services.InterviewService;
 import com.example.backend_ai_interview.services.QuestionStoreService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,7 +22,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import com.example.backend_ai_interview.dto.InterviewContext;
+import com.example.backend_ai_interview.dto.InterviewSessionDto;
+import com.example.backend_ai_interview.dto.QuestionSetDto;
 import com.example.backend_ai_interview.dto.Segments;
 
 @RestController
@@ -33,7 +33,7 @@ import com.example.backend_ai_interview.dto.Segments;
 public class MediaController {
 
     @Autowired
-    private MediaService mediaService;
+    private InterviewService mediaService;
     @Autowired
     private QuestionStoreService questionStoreService;
 
@@ -49,23 +49,24 @@ public class MediaController {
     @ApiResponse(responseCode = "500", description = "Error pada server")
     public ResponseEntity<?> uploadMedia(
         @Parameter(description = "File video atau audio", required = true)
+        @RequestPart("candidateName") String candidateName,
         @RequestPart("file") MultipartFile file,
         @RequestPart("level") String level,
         @RequestPart("segments") Segments segments
     ) throws Exception {
-        Media media = mediaService.handleUpload(file, level, segments);
+        InterviewSessionDto interviewSessionDto = mediaService.handleUpload(candidateName,file, level, segments);
         return ResponseEntity.ok(Map.of(
             "message", "Upload & transkripsi berhasil",
             "level", level,
             "segments", segments,
-            "listAnswers", media.getAnswers(),
-            "score", media.getFinalScore()
+            "listAnswers", interviewSessionDto.getAnswers(),
+            "score", interviewSessionDto.getTotalScore()
         ));
     }
 
     @GetMapping("/{level}")
     public ResponseEntity<?> getQuestionsByLevel(@PathVariable String level) {
-       InterviewContext data = questionStoreService.loadContextByLevel(level);
+       QuestionSetDto data = questionStoreService.loadContextByLevel(level);
         return ResponseEntity.ok(data);
     }
 

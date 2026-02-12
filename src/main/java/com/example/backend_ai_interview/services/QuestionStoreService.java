@@ -1,49 +1,66 @@
 package com.example.backend_ai_interview.services;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.example.backend_ai_interview.dto.InterviewContext;
-import com.example.backend_ai_interview.dto.QuestionContext;
+import com.example.backend_ai_interview.dto.QuestionSetDto;
+import com.example.backend_ai_interview.dto.QuestionItemDto;
+import com.example.backend_ai_interview.models.QuestionSet;
+import com.example.backend_ai_interview.mapper.QuestionSetMapper;
+
+import com.example.backend_ai_interview.repository.QuestionSetRepository;
 
 @Service
 public class QuestionStoreService {
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final QuestionSetRepository questionSetRepository;
+    
+    public QuestionStoreService(QuestionSetRepository questionSetRepository) {
+        this.questionSetRepository = questionSetRepository;
+    }
 
     public List<String> getAllLevels() {
         return Arrays.asList("JUNIOR", "MIDDLE", "SENIOR");
     }
 
-    public InterviewContext loadContextByLevel(String level) {
+    public QuestionSetDto loadContextByLevel(String level) {
         try {
-            String fileName = switch (level.toUpperCase()) {
-                case "JUNIOR" -> "junior.json";
-                case "MIDDLE" -> "middle.json";
-                case "SENIOR" -> "senior.json";
-                default -> throw new IllegalArgumentException("Level tidak valid");
-            };
-
-            InputStream is = getClass()
-                .getResourceAsStream("/com/example/backend_ai_interview/store/" + fileName);
-
-            return mapper.readValue(is, InterviewContext.class);
-
-        } catch (Exception e) {
-            throw new RuntimeException("Gagal load interview context", e);
+            QuestionSet questionSet =  questionSetRepository.findByLevel(level.toUpperCase())
+                .orElseThrow(() ->
+                    new IllegalArgumentException(
+                        "Interview context tidak ditemukan untuk level: " + level
+                    )
+                );
+            return QuestionSetMapper.toDto(questionSet);
+        } catch (DataAccessException e) {
+            throw new RuntimeException(
+                "Gagal mengakses database saat mengambil interview context",
+                e
+            );
         }
     }
 
-    public QuestionContext getQuestionById(InterviewContext context, String questionId) {
-        return context.listPertanyaan().stream()
-            .filter(q -> q.questionId().equals(questionId))
-            .findFirst()
-            .orElseThrow(() -> new RuntimeException("Question ID tidak ditemukan"));
+    public QuestionItemDto getQuestionById(
+            QuestionSetDto context,
+            String questionId
+    ) {
+        try {
+            return context.questions().stream()
+                .filter(q -> q.questionId().equals(questionId))
+                .findFirst()
+                .orElseThrow(() ->
+                    new IllegalArgumentException(
+                        "Question ID tidak ditemukan: " + questionId
+                    )
+                );
+        } catch (NullPointerException e) {
+            throw new IllegalStateException(
+                "Interview context belum terinisialisasi atau tidak valid",
+                e
+            );
+        }
     }
 }
 
