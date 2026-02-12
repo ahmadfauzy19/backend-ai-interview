@@ -1,0 +1,86 @@
+{
+  "_id": "backend_senior",
+  "level": "SENIOR",
+  "role": "Backend Engineer",
+  "technology": "Java Spring Boot",
+  "questions": [
+    {
+      "questionId": "SENIOR_Q1",
+      "question": "Bagaimana Anda mendesain aplikasi Spring Boot untuk menangani traffic tinggi?",
+      "rubrics": {
+        "1": {
+          "description": "Jawaban sangat umum",
+          "keywords": ["scalable", "cepat", "handle banyak user"]
+        },
+        "2": {
+          "description": "Menyebut scaling tanpa detail",
+          "keywords": ["horizontal scaling", "vertical scaling", "auto scale"]
+        },
+        "3": {
+          "description": "Menyebut cache dan load balancing",
+          "keywords": ["cache", "Redis", "load balancer", "round robin"]
+        },
+        "4": {
+          "description": "Menjelaskan stateless service dan database optimization",
+          "keywords": ["stateless", "connection pool", "index database", "query optimization"]
+        },
+        "5": {
+          "description": "Menjelaskan scalability end-to-end (LB, cache, async, connection pool)",
+          "keywords": ["end-to-end scalability", "async processing", "message queue", "connection pool tuning", "bottleneck analysis"]
+        }
+      }
+    },
+    {
+      "questionId": "SENIOR_Q2",
+      "question": "Bagaimana cara mengamankan REST API di Spring Boot?",
+      "rubrics": {
+        "1": {
+          "description": "Hanya login biasa",
+          "keywords": ["login", "username password", "session"]
+        },
+        "2": {
+          "description": "Menyebut JWT",
+          "keywords": ["JWT", "token"]
+        },
+        "3": {
+          "description": "Menggunakan Spring Security",
+          "keywords": ["Spring Security", "SecurityFilterChain", "authentication filter"]
+        },
+        "4": {
+          "description": "Role-based access control",
+          "keywords": ["RBAC", "role", "authority", "@PreAuthorize"]
+        },
+        "5": {
+          "description": "OAuth2, token refresh, rate limiting, dan security best practice",
+          "keywords": ["OAuth2", "refresh token", "rate limiting", "CORS", "CSRF", "OWASP"]
+        }
+      }
+    },
+    {
+      "questionId": "SENIOR_Q3",
+      "question": "Ceritakan pengalaman Anda dalam melakukan refactor atau improvement sistem backend yang sudah berjalan.",
+      "rubrics": {
+        "1": {
+          "description": "Tidak pernah melakukan refactor",
+          "keywords": ["belum pernah", "tidak ada pengalaman"]
+        },
+        "2": {
+          "description": "Refactor kecil tanpa dampak jelas",
+          "keywords": ["rename method", "rapikan kode", "minor change"]
+        },
+        "3": {
+          "description": "Refactor untuk readability dan maintainability",
+          "keywords": ["clean code", "separation of concern", "reduce complexity"]
+        },
+        "4": {
+          "description": "Menjelaskan problem dan solusi teknis",
+          "keywords": ["performance issue", "bottleneck", "legacy code", "technical debt"]
+        },
+        "5": {
+          "description": "Menjelaskan dampak teknis dan dampak bisnis",
+          "keywords": ["improve performance", "reduce cost", "downtime reduction", "scalability impact", "business impact"]
+        }
+      }
+    }
+  ]
+}

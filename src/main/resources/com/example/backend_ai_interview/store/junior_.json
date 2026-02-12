@@ -1,0 +1,86 @@
+{
+  "_id": "backend_junior",
+  "level": "JUNIOR",
+  "role": "Backend Engineer",
+  "technology": "Java Spring Boot",
+  "questions": [
+    {
+      "questionId": "JUNIOR_Q1",
+      "question": "Apa itu Spring Boot dan mengapa lebih sering digunakan dibanding Spring Framework biasa?",
+      "rubrics": {
+        "1": {
+          "description": "Tidak memahami Spring Boot",
+          "keywords": ["tidak tahu", "tidak paham", "spring boot itu apa"]
+        },
+        "2": {
+          "description": "Menjawab sangat umum tanpa penjelasan teknis",
+          "keywords": ["framework", "untuk backend", "memudahkan development"]
+        },
+        "3": {
+          "description": "Menjelaskan auto-configuration dan starter",
+          "keywords": ["auto configuration", "spring starter", "dependency management"]
+        },
+        "4": {
+          "description": "Memberi contoh penggunaan sederhana",
+          "keywords": ["@SpringBootApplication", "run application", "contoh controller"]
+        },
+        "5": {
+          "description": "Menjelaskan kelebihan dan best practice Spring Boot",
+          "keywords": ["standalone", "embedded tomcat", "best practice", "production ready"]
+        }
+      }
+    },
+    {
+      "questionId": "JUNIOR_Q2",
+      "question": "Jelaskan alur request dari client sampai ke database pada aplikasi Spring Boot.",
+      "rubrics": {
+        "1": {
+          "description": "Tidak memahami alur request",
+          "keywords": ["tidak tahu alur", "langsung ke database", "bingung"]
+        },
+        "2": {
+          "description": "Menjawab sebagian alur",
+          "keywords": ["controller saja", "request ke controller"]
+        },
+        "3": {
+          "description": "Menjelaskan Controller, Service, Repository",
+          "keywords": ["controller", "service", "repository", "layered architecture"]
+        },
+        "4": {
+          "description": "Menjelaskan Entity dan JPA",
+          "keywords": ["entity", "JPA", "Hibernate", "@Entity"]
+        },
+        "5": {
+          "description": "Menjelaskan transaction dan lifecycle request",
+          "keywords": ["transaction", "@Transactional", "lifecycle request", "commit rollback"]
+        }
+      }
+    },
+    {
+      "questionId": "JUNIOR_Q3",
+      "question": "Apa itu REST API dan sebutkan fungsi HTTP Method GET, POST, PUT, dan DELETE?",
+      "rubrics": {
+        "1": {
+          "description": "Tidak memahami REST",
+          "keywords": ["tidak tahu REST", "asal jawab", "bingung"]
+        },
+        "2": {
+          "description": "Hanya menyebut nama method",
+          "keywords": ["GET", "POST", "PUT", "DELETE"]
+        },
+        "3": {
+          "description": "Menjelaskan fungsi HTTP method dengan benar",
+          "keywords": ["GET ambil data", "POST simpan data", "PUT update", "DELETE hapus"]
+        },
+        "4": {
+          "description": "Memberi contoh penggunaan API",
+          "keywords": ["/api/users", "request response", "contoh endpoint"]
+        },
+        "5": {
+          "description": "Menjelaskan REST constraint dan idempotency",
+          "keywords": ["stateless", "resource based", "idempotent", "HTTP semantics"]
+        }
+      }
+    }
+  ]
+}
