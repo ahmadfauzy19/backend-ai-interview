@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
 
-// @Component
+@Component
 @RequiredArgsConstructor
 public class Seeder implements CommandLineRunner {
 
