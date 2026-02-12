@@ -3,87 +3,84 @@
   "level": "JUNIOR",
   "role": "Backend Engineer",
   "technology": "Java Spring Boot",
-  "list_pertanyaan": [
+  "questions": [
     {
-      "question_id": "JUNIOR_Q1",
-      "pertanyaan": "Apa itu Spring Boot dan mengapa lebih sering digunakan dibanding Spring Framework biasa?",
-      "rubrik_penilaian": {
+      "questionId": "JUNIOR_Q1",
+      "question": "Apa itu Spring Boot dan mengapa lebih sering digunakan dibanding Spring Framework biasa?",
+      "rubrics": {
         "1": {
-          "deskripsi": "Tidak memahami Spring Boot",
-          "keyword": ["tidak tahu", "tidak paham", "spring boot itu apa"]
+          "description": "Tidak memahami Spring Boot",
+          "keywords": ["tidak tahu", "tidak paham", "spring boot itu apa"]
         },
         "2": {
-          "deskripsi": "Menjawab sangat umum tanpa penjelasan teknis",
-          "keyword": ["framework", "untuk backend", "memudahkan development"]
+          "description": "Menjawab sangat umum tanpa penjelasan teknis",
+          "keywords": ["framework", "untuk backend", "memudahkan development"]
         },
         "3": {
-          "deskripsi": "Menjelaskan auto-configuration dan starter",
-          "keyword": ["auto configuration", "spring starter", "dependency management"]
+          "description": "Menjelaskan auto-configuration dan starter",
+          "keywords": ["auto configuration", "spring starter", "dependency management"]
         },
         "4": {
-          "deskripsi": "Memberi contoh penggunaan sederhana",
-          "keyword": ["@SpringBootApplication", "run application", "contoh controller"]
+          "description": "Memberi contoh penggunaan sederhana",
+          "keywords": ["@SpringBootApplication", "run application", "contoh controller"]
         },
         "5": {
-          "deskripsi": "Menjelaskan kelebihan dan best practice Spring Boot",
-          "keyword": ["standalone", "embedded tomcat", "best practice", "production ready"]
+          "description": "Menjelaskan kelebihan dan best practice Spring Boot",
+          "keywords": ["standalone", "embedded tomcat", "best practice", "production ready"]
         }
-      },
-      "jawaban_karyawan": ""
+      }
     },
     {
-      "question_id": "JUNIOR_Q2",
-      "pertanyaan": "Jelaskan alur request dari client sampai ke database pada aplikasi Spring Boot.",
-      "rubrik_penilaian": {
+      "questionId": "JUNIOR_Q2",
+      "question": "Jelaskan alur request dari client sampai ke database pada aplikasi Spring Boot.",
+      "rubrics": {
         "1": {
-          "deskripsi": "Tidak memahami alur request",
-          "keyword": ["tidak tahu alur", "langsung ke database", "bingung"]
+          "description": "Tidak memahami alur request",
+          "keywords": ["tidak tahu alur", "langsung ke database", "bingung"]
         },
         "2": {
-          "deskripsi": "Menjawab sebagian alur",
-          "keyword": ["controller saja", "request ke controller"]
+          "description": "Menjawab sebagian alur",
+          "keywords": ["controller saja", "request ke controller"]
         },
         "3": {
-          "deskripsi": "Menjelaskan Controller, Service, Repository",
-          "keyword": ["controller", "service", "repository", "layered architecture"]
+          "description": "Menjelaskan Controller, Service, Repository",
+          "keywords": ["controller", "service", "repository", "layered architecture"]
         },
         "4": {
-          "deskripsi": "Menjelaskan Entity dan JPA",
-          "keyword": ["entity", "JPA", "Hibernate", "@Entity"]
+          "description": "Menjelaskan Entity dan JPA",
+          "keywords": ["entity", "JPA", "Hibernate", "@Entity"]
         },
         "5": {
-          "deskripsi": "Menjelaskan transaction dan lifecycle request",
-          "keyword": ["transaction", "@Transactional", "lifecycle request", "commit rollback"]
+          "description": "Menjelaskan transaction dan lifecycle request",
+          "keywords": ["transaction", "@Transactional", "lifecycle request", "commit rollback"]
         }
-      },
-      "jawaban_karyawan": ""
+      }
     },
     {
-      "question_id": "JUNIOR_Q3",
-      "pertanyaan": "Apa itu REST API dan sebutkan fungsi HTTP Method GET, POST, PUT, dan DELETE?",
-      "rubrik_penilaian": {
+      "questionId": "JUNIOR_Q3",
+      "question": "Apa itu REST API dan sebutkan fungsi HTTP Method GET, POST, PUT, dan DELETE?",
+      "rubrics": {
         "1": {
-          "deskripsi": "Tidak memahami REST",
-          "keyword": ["tidak tahu REST", "asal jawab", "bingung"]
+          "description": "Tidak memahami REST",
+          "keywords": ["tidak tahu REST", "asal jawab", "bingung"]
         },
         "2": {
-          "deskripsi": "Hanya menyebut nama method",
-          "keyword": ["GET", "POST", "PUT", "DELETE"]
+          "description": "Hanya menyebut nama method",
+          "keywords": ["GET", "POST", "PUT", "DELETE"]
         },
         "3": {
-          "deskripsi": "Menjelaskan fungsi HTTP method dengan benar",
-          "keyword": ["GET ambil data", "POST simpan data", "PUT update", "DELETE hapus"]
+          "description": "Menjelaskan fungsi HTTP method dengan benar",
+          "keywords": ["GET ambil data", "POST simpan data", "PUT update", "DELETE hapus"]
         },
         "4": {
-          "deskripsi": "Memberi contoh penggunaan API",
-          "keyword": ["/api/users", "request response", "contoh endpoint"]
+          "description": "Memberi contoh penggunaan API",
+          "keywords": ["/api/users", "request response", "contoh endpoint"]
         },
         "5": {
-          "deskripsi": "Menjelaskan REST constraint dan idempotency",
-          "keyword": ["stateless", "resource based", "idempotent", "HTTP semantics"]
+          "description": "Menjelaskan REST constraint dan idempotency",
+          "keywords": ["stateless", "resource based", "idempotent", "HTTP semantics"]
         }
-      },
-      "jawaban_karyawan": ""
+      }
     }
   ]
 }

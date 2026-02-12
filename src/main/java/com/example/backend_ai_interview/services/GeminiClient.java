@@ -34,8 +34,6 @@ public class GeminiClient {
             return "0";
         }
 
-        System.out.println("client model: " + client);
-
         GenerateContentResponse response =
                 client.models.generateContent(
                         model,

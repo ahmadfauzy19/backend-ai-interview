@@ -12,20 +12,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.backend_ai_interview.dto.AnswerResult;
-import com.example.backend_ai_interview.dto.QuestionContext;
+import com.example.backend_ai_interview.dto.InterviewSessionDto;
+import com.example.backend_ai_interview.dto.QuestionItemDto;
 import com.example.backend_ai_interview.dto.Segment;
 import com.example.backend_ai_interview.dto.Segments;
-import com.example.backend_ai_interview.models.Media;
+import com.example.backend_ai_interview.models.AnswerItem;
+import com.example.backend_ai_interview.models.InterviewSession;
+import com.example.backend_ai_interview.repository.InterviewSessionRepository;
 import com.example.backend_ai_interview.utils.Ffmpeg;
-// import com.fasterxml.jackson.databind.ObjectMapper;
-// import com.example.backend_ai_interview.services.AssesmentService;
-// import com.example.backend_ai_interview.services.SttClient;
-// import com.example.backend_ai_interview.services.QuestionStoreService;
-import com.example.backend_ai_interview.dto.InterviewContext;
+import com.example.backend_ai_interview.dto.QuestionSetDto;
+import com.example.backend_ai_interview.mapper.InterviewSessionMapper;
 
 @Service
-public class MediaService {
+public class InterviewService {
 
     @Autowired
     private SttClient sttClient;
@@ -36,16 +35,22 @@ public class MediaService {
     @Autowired
     private QuestionStoreService questionStoreService;
 
-    public Media handleUpload(
+    private final InterviewSessionRepository interviewSessionRepository;
+
+    public InterviewService(InterviewSessionRepository interviewSessionRepository) {
+        this.interviewSessionRepository = interviewSessionRepository;
+    }
+
+    public InterviewSessionDto handleUpload(
+            String CandidateName,
             MultipartFile file,
             String level,
             Segments segments
     ) throws Exception {
 
         // ===== LOAD CONTEXT LEVEL =====
-        InterviewContext context = questionStoreService.loadContextByLevel(level);
-        // context punya: role, technology, list_pertanyaan
-
+        QuestionSetDto context = questionStoreService.loadContextByLevel(level);
+        
         // ===== simpan temp video =====
         File tempVideo = Files.createTempFile("video-", ".webm").toFile();
         file.transferTo(tempVideo);
@@ -54,7 +59,7 @@ public class MediaService {
         File fullAudio = Files.createTempFile("audio-full-", ".wav").toFile();
         Ffmpeg.extractAudio(tempVideo.getAbsolutePath(), fullAudio.getAbsolutePath());
 
-        List<AnswerResult> answers = new ArrayList<>();
+        List<AnswerItem> answers = new ArrayList<>();
 
         for (Segment seg : segments.items()) {
 
@@ -74,24 +79,25 @@ public class MediaService {
             String jawaban = sttClient.transcribe(cutAudio);
 
             // ===== ambil pertanyaan + rubrik =====
-            QuestionContext qc =
+            QuestionItemDto qc =
                 questionStoreService.getQuestionById(context, seg.questionId());
 
             // ===== SCORING PER PERTANYAAN =====
             Integer score = assesmentService.evaluateSingleAnswer(
                 level,
-                qc.pertanyaan(),
-                qc.rubrikPenilaian(),
+                qc.question(),
+                qc.rubrics(),
                 jawaban
             );
 
             // ===== SIMPAN KE CONTEXT =====
-            AnswerResult ar = new AnswerResult();
+            AnswerItem ar = new AnswerItem();
             ar.setQuestionId(seg.questionId());
-            ar.setPertanyaan(qc.pertanyaan());
-            ar.setRubrikPenilaian(qc.rubrikPenilaian());
-            ar.setJawabanKaryawan(jawaban);
+            ar.setQuestionText(qc.question());
+            ar.setAnswerText(jawaban);
             ar.setScore(score);
+            ar.setStart(seg.start());
+            ar.setEnd(seg.end());
 
             answers.add(ar);
 
@@ -101,22 +107,25 @@ public class MediaService {
         // ===== HITUNG SCORE FINAL =====
         int finalScore = Math.round(
             (float) answers.stream()
-                .mapToInt(AnswerResult::getScore)
+                .mapToInt(AnswerItem::getScore)
                 .average()
                 .orElse(0)
         );
 
-        // ===== BUILD MEDIA =====
-        Media media = new Media();
-        media.setLevel(context.level());
-        media.setRole(context.role());
-        media.setTechnology(context.technology());
-        media.setAnswers(answers);
-        media.setFinalScore(finalScore);
+        // ===== BUILD INTEVIEW SESSION =====
+        InterviewSession interviewSession = new InterviewSession();
+        interviewSession.setCandidateName(CandidateName);
+        interviewSession.setLevel(context.level());
+        interviewSession.setRole(context.role());
+        interviewSession.setTechnology(context.technology());
+        interviewSession.setAnswers(answers);
+        interviewSession.setTotalScore(finalScore);
+        // ===== SAVE TO DATABASE =====
+        InterviewSession savedSession = interviewSessionRepository.save(interviewSession);
 
         tempVideo.delete();
         fullAudio.delete();
 
-        return media;
+        return InterviewSessionMapper.toDto(savedSession);
     }
 }
