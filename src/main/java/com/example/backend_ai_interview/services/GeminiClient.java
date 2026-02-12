@@ -1,6 +1,5 @@
 package com.example.backend_ai_interview.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.backend_ai_interview.config.GeminiPropertiesConfig;
@@ -13,7 +12,6 @@ public class GeminiClient {
     private final Client client;
     private final String model;
 
-    @Autowired
     public GeminiClient(GeminiPropertiesConfig props) {
         System.setProperty("GEMINI_API_KEY", props.getApiKey());
 
