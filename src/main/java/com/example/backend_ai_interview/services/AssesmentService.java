@@ -9,6 +9,7 @@ import com.example.backend_ai_interview.models.AssessmentDocument;
 import com.example.backend_ai_interview.models.QuestionAnswer;
 import com.example.backend_ai_interview.repository.AssessmentRepository;
 import com.example.backend_ai_interview.utils.PromptingPenilaian;
+import com.example.backend_ai_interview.utils.PromptingPenilaianV2;
 
 @Service
 public class AssesmentService {
@@ -16,15 +17,18 @@ public class AssesmentService {
     private final AssessmentRepository repository;
     private final PromptingPenilaian promptBuilder;
     private final GeminiClient geminiClient;
+    private final PromptingPenilaianV2 promptingPenilaianV2;
 
     public AssesmentService(
             AssessmentRepository repository,
             PromptingPenilaian promptBuilder,
-            GeminiClient geminiClient
+            GeminiClient geminiClient,
+            PromptingPenilaianV2 promptingPenilaianV2
     ) {
         this.repository = repository;
         this.promptBuilder = promptBuilder;
         this.geminiClient = geminiClient;
+        this.promptingPenilaianV2 = promptingPenilaianV2;
     }
 
     // ===============================
@@ -60,7 +64,7 @@ public class AssesmentService {
 
         for (QuestionAnswer qa : doc.getListPertanyaan()) {
 
-            String prompt = promptBuilder.buildPrompt(
+            String prompt = promptingPenilaianV2.buildPrompt(
                     level,
                     qa.getPertanyaan(),
                     qa.getRubrikPenilaian(),
