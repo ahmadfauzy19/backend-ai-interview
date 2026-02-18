@@ -29,6 +29,7 @@ public class Ffmpeg {
             "-ss", startStr,
             "-i", inputAudio,
             "-t", durationStr,
+            "-af", "afftdn",
             "-acodec", "pcm_s16le",
             outputAudio
         );
